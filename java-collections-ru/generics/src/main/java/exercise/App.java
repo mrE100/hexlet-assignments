@@ -11,8 +11,8 @@ public class App {
         List<Map<String, String>> result = new ArrayList<>();
         for (Map currentMap : books) {
             List<String> keys = new ArrayList<>(where.keySet());
-            if (currentMap.get(keys.get(0)).equals(where.get(keys.get(0)))){
-                    if (currentMap.get(keys.get(1)).equals(where.get(keys.get(1)))){
+            if (currentMap.get(keys.get(0)).equals(where.get(keys.get(0)))) {
+                if (currentMap.get(keys.get(1)).equals(where.get(keys.get(1)))) {
                     result.add(currentMap);
                 }
             }
