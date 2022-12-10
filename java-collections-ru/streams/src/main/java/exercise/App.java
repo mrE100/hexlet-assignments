@@ -1,6 +1,7 @@
 package exercise;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 // BEGIN
 public class App {
