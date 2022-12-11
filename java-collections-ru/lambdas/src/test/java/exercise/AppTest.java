@@ -4,36 +4,38 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 // BEGIN
-@Test
+class AppTest {
+    @Test
     void testAppEnlargeArrayImage() {
-        String[][] image ={
-            {"*","*","*","*"},
-            {"*"," "," ","*"},
-            {"*"," "," ","*"},
-            {"*","*","*","*"},
-            };
+        String[][] image = {
+                {"*", "*", "*", "*"},
+                {"*", " ", " ", "*"},
+                {"*", " ", " ", "*"},
+                {"*", "*", "*", "*"},
+        };
         String[][] actual = App.enlargeArrayImage(image);
-        String[][] expected ={
-            {"*","*","*","*","*","*","*","*"},
-            {"*","*","*","*","*","*","*","*"},
-            {"*","*"," "," "," "," ","*","*"},
-            {"*","*"," "," "," "," ","*","*"},
-            {"*","*"," "," "," "," ","*","*"},
-            {"*","*"," "," "," "," ","*","*"},
-            {"*","*","*","*","*","*","*","*"},
-            {"*","*","*","*","*","*","*","*"},
-            };
+        String[][] expected = {
+                {"*", "*", "*", "*", "*", "*", "*", "*"},
+                {"*", "*", "*", "*", "*", "*", "*", "*"},
+                {"*", "*", " ", " ", " ", " ", "*", "*"},
+                {"*", "*", " ", " ", " ", " ", "*", "*"},
+                {"*", "*", " ", " ", " ", " ", "*", "*"},
+                {"*", "*", " ", " ", " ", " ", "*", "*"},
+                {"*", "*", "*", "*", "*", "*", "*", "*"},
+                {"*", "*", "*", "*", "*", "*", "*", "*"},
+        };
         assertThat(actual).isEqualTo(expected);
-        }
+    }
 
 
-@Test
+    @Test
     void testAppEnlargeArrayImageWithEmptyList() {
-        String[][] image ={
-            };
-        String[][] expected ={
-            };
+        String[][] image = {
+        };
+        String[][] expected = {
+        };
         String[][] actual = App.enlargeArrayImage(image);
         assertThat(actual).isEqualTo(expected);
-        }
+    }
+}
 // END
