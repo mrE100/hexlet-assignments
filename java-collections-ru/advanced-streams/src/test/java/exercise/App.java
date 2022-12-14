@@ -11,10 +11,10 @@ public class App {
                 .filter(str -> str.contains("X_FORWARDED_"))
                 .toList();
         for (String string : strings) {
-            List<String> list = List.of(string.split("\""));
+            string = string.substring(string.indexOf('"')).replaceAll("\"", "");
+            List<String> list = List.of(string.split(","));
             System.out.println(list);
             for (String str : list) {
-                str.replaceAll("\"", "").replace("environment=", "");
                 if (str.startsWith("X_FORWARDED_")) {
                     builder.append(string.replace("X_FORWARDED_", ""));
                 }
