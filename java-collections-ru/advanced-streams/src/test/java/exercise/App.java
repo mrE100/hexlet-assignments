@@ -12,7 +12,9 @@ public class App {
                 .toList();
         for (String string : strings) {
             List<String> list = List.of(string.split("\""));
+            System.out.println(list);
             for (String str : list) {
+                str.replaceAll("\"", "").replace("environment=", "");
                 if (str.startsWith("X_FORWARDED_")) {
                     builder.append(string.replace("X_FORWARDED_", ""));
                 }
