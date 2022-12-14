@@ -20,6 +20,6 @@ public class App {
                 }
             }
         }
-        return result.toString();
+        return String.join(", ", result);
     }
 }
