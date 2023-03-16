@@ -4,7 +4,7 @@ package exercise;
 public interface Home {
     double getArea();
 
-    public default int compareTo(Home object2) {
+    default int compareTo(Home object2) {
         if (this.getArea() > object2.getArea()) {
             return 1;
         }
