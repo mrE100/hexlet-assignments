@@ -32,3 +32,5 @@ public class ReversedSequence implements CharSequence {
     public String toString() {
         return new StringBuilder(text).toString();
     }
+}
+// END
