@@ -1,9 +1,10 @@
+package exercise;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 // BEGIN
-package exercise
-
 public class App {
 
     public static void main(String[] args) {
