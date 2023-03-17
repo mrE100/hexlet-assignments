@@ -57,6 +57,13 @@ class AppTest {
     }
 
     // BEGIN
-    
+    @Test
+    void testReversedSequence() {
+        CharSequence text = new StringBuilder("abcdef");
+        CharSequence result = new ReversedSequence(text);
+        System.out.println(result);
+        CharSequence expected = new StringBuilder("fedcba");
+        assertThat(result.toString()).isEqualTo(expected.toString());
+    }
     // END
 }
