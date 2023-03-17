@@ -4,6 +4,7 @@ package exercise;
 public class ReversedSequence implements CharSequence {
     private final CharSequence text;
 
+
     public ReversedSequence(CharSequence newText) {
         StringBuilder toPut = new StringBuilder();
         for (int i = newText.length() - 1; i >= 0; i--) {
@@ -26,5 +27,8 @@ public class ReversedSequence implements CharSequence {
     public CharSequence subSequence(int start, int end) {
         return text.subSequence(start, end);
     }
-}
-// END
+
+    @Override
+    public String toString() {
+        return new StringBuilder(text).toString();
+    }
