@@ -13,14 +13,14 @@ public class App {
         ));
         List<String> result = App.buildApartmentsList(apartments, 3);
         System.out.println(result);
-        CharSequence text = new ReversedSequence("abcdef");
-        System.out.println(text);
+        CharSequence text = new ReversedSequence((CharSequence) new  StringBuffer("abcdef"));
+        System.out.println(text.toString());
 
     }
 
-    public static List<String> buildApartmentsList(List<exercise.Home> apartments, int size) {
+    public static List<String> buildApartmentsList(List<Home> apartments, int size) {
 
-        List.sort(apartments, (s1, s2) -> {
+        Collections.sort(apartments, (s1, s2) -> {
             return s1.compareTo(s2);
         });
         ArrayList<String> result = new ArrayList<>();
