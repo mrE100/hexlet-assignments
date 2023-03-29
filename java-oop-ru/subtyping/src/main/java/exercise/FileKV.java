@@ -33,7 +33,7 @@ public class FileKV implements KeyValueStorage {
     @Override
     public String get(String key, String defaultValue) {
         Map data = Utils.unserialize(Utils.readFile(this.path));
-        if (data.containsKey(key)){
+        if (data.containsKey(key)) {
             return (String) data.get(key);
         }
         return defaultValue;

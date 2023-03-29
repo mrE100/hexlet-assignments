@@ -1,6 +1,9 @@
 package exercise;
 
-import java.util.*;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 // BEGIN
 public class App {
@@ -16,7 +19,7 @@ public class App {
         }
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         KeyValueStorage storage = new InMemoryKV(Map.of("key", "value", "key2", "value2"));
         System.out.println(storage.toMap());
         App.swapKeyValue(storage);
