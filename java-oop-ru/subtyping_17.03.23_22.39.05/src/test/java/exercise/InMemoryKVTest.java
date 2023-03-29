@@ -35,7 +35,6 @@ class InMemoryKVTest {
         clonedInitial.putAll(initial);
 
         KeyValueStorage storage = new InMemoryKV(initial);
-
         initial.put("key2", "value2");
         assertThat(storage.toMap()).isEqualTo(clonedInitial);
 
