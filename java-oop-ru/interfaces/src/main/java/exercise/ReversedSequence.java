@@ -1,5 +1,7 @@
 package exercise;
 
+import java.util.stream.IntStream;
+
 // BEGIN
 public class ReversedSequence implements CharSequence {
     private final CharSequence text;
