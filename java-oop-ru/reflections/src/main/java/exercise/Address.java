@@ -2,22 +2,23 @@ package exercise;
 
 class Address {
     // BEGIN
-    
+    @NotNull
     // END
+    @MinLength(minLength = 4)
     private String country;
 
     // BEGIN
-    
+    @NotNull
     // END
     private String city;
 
     // BEGIN
-    
+    @NotNull
     // END
     private String street;
 
     // BEGIN
-    
+    @NotNull
     // END
     private String houseNumber;
 
