@@ -23,7 +23,7 @@ public class CompaniesServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         List<String> result = getCompanies();
         String filter = request.getParameter("search");
-        if (!filter.isEmpty()) {
+        if (filter != null && !filter.isEmpty()) {
             result = new ArrayList();
             for (String company : getCompanies()) {
                 if (company.contains(filter)) {
