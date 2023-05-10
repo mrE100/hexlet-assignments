@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 import static exercise.Data.getCompanies;
 
 public class CompaniesServlet extends HttpServlet {
@@ -27,7 +27,7 @@ public class CompaniesServlet extends HttpServlet {
             result = new ArrayList();
             for (String company : getCompanies()) {
                 if (company.contains(filter)) {
-                    result.add('"' + company + '"');
+                    result.add(company);
                 }
             }
             if (result.isEmpty()) {
