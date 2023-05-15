@@ -1,5 +1,6 @@
 package exercise.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.ArrayUtils;
@@ -40,7 +42,10 @@ public class UsersServlet extends HttpServlet {
 
     private List getUsers() throws JsonProcessingException, IOException {
         // BEGIN
-        
+        ObjectMapper mapper = new ObjectMapper();
+        Path path = Paths.get("./src/main/resources/users.json").toAbsolutePath().normalize();
+        String data = Files.readString(path);
+        return mapper.readValue(data, new TypeReference<List<Map<String, Object>>>() { });
         // END
     }
 
@@ -49,7 +54,35 @@ public class UsersServlet extends HttpServlet {
                 throws IOException {
 
         // BEGIN
-        
+        List<Map<String, Object>> users = getUsers();
+        StringBuilder builder = new StringBuilder();
+        builder.append("""
+                <!DOCTYPE html>
+                <html lang="ru">
+                    <head>
+                        <meta charset="UTF-8">
+                    </head>
+                    <body>
+                        <table>
+                """);
+        for (var user: users) {
+            builder.append(
+                    "<tr>"
+                            + "<td>" + user.get("id") + "</td>"
+                            + "<td>" + "<a href=\"/users/" + user.get("id") + "\">" + user.get("firstName") + " "
+                            + user.get("lastName") + "</a>"
+                            + "</td>"
+                            + "<tr>");
+        }
+
+        builder.append("""
+                        <table>
+                    </body>
+                </html>
+                """);
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.println(builder);
         // END
     }
 
@@ -59,7 +92,39 @@ public class UsersServlet extends HttpServlet {
                  throws IOException {
 
         // BEGIN
-        
+        List<Map<String, Object>> users = getUsers();
+        StringBuilder builder = new StringBuilder();
+        for (var user : users) {
+            if (user.get("id").equals(id)) {
+                builder.append("""
+                <!DOCTYPE html>
+                <html lang="ru">
+                    <head>
+                        <meta charset="UTF-8">
+                    </head>
+                    <body>
+                        <table>
+                """);
+                for (String key : user.keySet()) {
+                    builder.append(
+                            "<tr>" +
+                            "<td>" + key + "</td>"
+                                    + "<td>" + user.get(key)
+                                    + "</td>"
+                                    + "</tr>");
+                }
+                builder.append("""
+                            <table>
+                        </body>
+                    </html>
+                    """);
+                response.setContentType("text/html;charset=UTF-8");
+                PrintWriter writer = response.getWriter();
+                writer.println(builder);
+                return;
+            }
+        }
+        response.sendError(404);
         // END
     }
 }
