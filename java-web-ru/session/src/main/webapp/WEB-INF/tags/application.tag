@@ -41,7 +41,12 @@
         </nav>
         <div class="container mt-3">
             <!-- BEGIN -->
-            
+            <% if (session.getAttribute("flash") != null) { %>
+            <div class="alert alert-info" role="alert">
+                ${sessionScope.flash}
+            </div>
+            <% } %>
+            <% session.removeAttribute("flash"); %>
             <!-- END -->
             <jsp:doBody />
         </div>
