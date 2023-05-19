@@ -15,7 +15,24 @@
         <div class="container">
             <a href="/users">Все пользователи</a>
             <!-- BEGIN -->
-            
+            <form action="/users/edit/" method="post">
+                <div>${error}</div>
+                <div>
+                <div class="mb-3">
+                    <label>Имя</label>
+                    <input class="form-control" type="text" name="firstName" value=${user.get("firstName")}>
+                </div>
+                <div class="mb-3">
+                    <label>Фамилия</label>
+                    <input class="form-control" type="text" name="lastName" value=${user.get("lastName")}>
+                </div>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input class="form-control" type="text" name="email" value=${user.get("email")}>
+                </div>
+                    <input type="hidden" name="id" value=${user.get("id")}>
+                <button class="btn btn-primary" type="submit">Изменить</button>
+            </form>
             <!-- END -->
         </div>
     </body>

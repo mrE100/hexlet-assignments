@@ -125,7 +125,12 @@ public class UsersServlet extends HttpServlet {
                  throws IOException, ServletException {
 
         // BEGIN
-        
+        String id = getNextId();
+        Map<String, String> user = new HashMap<>();
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/new.jsp");
+        request.setAttribute("user", user);
+        request.setAttribute("error", "");
+        requestDispatcher.forward(request, response);
         // END
     }
 
@@ -134,7 +139,28 @@ public class UsersServlet extends HttpServlet {
                  throws IOException, ServletException {
 
         // BEGIN
-        
+        String id = getNextId();
+        Map<String, String> user = new HashMap<>();
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
+
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/new.jsp");
+            request.setAttribute("user", user);
+            request.setAttribute("error", "Имя и Фамилия не должны быть пустыми!");
+            response.setStatus(422);
+            requestDispatcher.forward(request, response);
+            return;
+        }
+        user.put("firstName", firstName);
+        user.put("lastName", lastName);
+        user.put("email", email);
+        user.put("id", id);
+        users.add(user);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/new.jsp");
+        request.setAttribute("users", users);
+        requestDispatcher.forward(request, response);
         // END
     }
 
@@ -152,7 +178,9 @@ public class UsersServlet extends HttpServlet {
         }
 
         // BEGIN
-        
+        request.setAttribute("user", user);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/edit.jsp");
+        requestDispatcher.forward(request, response);
         // END
     }
 
@@ -170,7 +198,24 @@ public class UsersServlet extends HttpServlet {
         }
 
         // BEGIN
-        
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
+        user.put("firstName", firstName);
+        user.put("lastName", lastName);
+        user.put("email", email);
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/edit.jsp");
+            request.setAttribute("user", user);
+            request.setAttribute("error", "Имя и Фамилия не должны быть пустыми!");
+            response.setStatus(422);
+            requestDispatcher.forward(request, response);
+            return;
+        }
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/show.jsp");
+        request.setAttribute("user", user);
+        requestDispatcher.forward(request, response);
         // END
     }
 

@@ -15,7 +15,24 @@
         <div class="container">
             <a href="/users">Все пользователи</a>
             <!-- BEGIN -->
-            
+            <form action="/users/new/" method="post">
+                <div>${error}</div>
+                <div>
+                    <h6>Введите данные для создания нового пользователя</h6>
+                <div class="mb-3">
+                    <label>Имя</label>
+                    <input class="form-control" type="text" name="firstName" value=${user.getOrDefault("firstName", "")}>
+                </div>
+                <div class="mb-3">
+                    <label>Фамилия</label>
+                    <input class="form-control" type="text" name="lastName" value=${user.getOrDefault("lastName", "")}>
+                </div>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input class="form-control" type="text" name="email" value=${user.getOrDefault("email", "")}>
+                </div>
+                <button class="btn btn-primary" type="submit">Создать</button>
+            </form>
             <!-- END -->
         </div>
     </body>
