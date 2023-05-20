@@ -78,7 +78,10 @@ public class App {
 
     public static void main(String[] args) throws LifecycleException, SQLException, IOException {
         // BEGIN
-        
+        Connection connection = DriverManager.getConnection("jdbc:h2:./hexlet");
+        Statement statement = connection.createStatement();
+        String content = getFileContent("init.sql");
+        statement.execute(content);
         // END
         int port = getPort();
         Tomcat app = getApp(port, connection);
