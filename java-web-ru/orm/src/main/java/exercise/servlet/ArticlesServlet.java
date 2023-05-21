@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.util.List;
+
+import io.ebean.DB;
 import org.apache.commons.lang3.ArrayUtils;
 import io.ebean.PagedList;
 
@@ -85,7 +87,13 @@ public class ArticlesServlet extends HttpServlet {
         int offset = (normalizedPage - 1) * articlesPerPage;
 
         // BEGIN
-        
+        PagedList<Article> pagedList = new QArticle()
+                .orderBy().id.asc()
+                .setFirstRow(offset)
+                .setMaxRows(articlesPerPage)
+                .findPagedList();
+        List<Article> articles = pagedList.getList();
+        request.setAttribute("articles", articles);
         // END
         request.setAttribute("page", normalizedPage);
         TemplateEngineUtil.render("articles/index.html", request, response);
@@ -98,7 +106,10 @@ public class ArticlesServlet extends HttpServlet {
         long id = Long.parseLong(getId(request));
 
         // BEGIN
-        
+        Article article = new QArticle()
+                .id.equalTo(id)
+                .findOne();
+        request.setAttribute("article", article);
         // END
         TemplateEngineUtil.render("articles/show.html", request, response);
     }
@@ -108,7 +119,8 @@ public class ArticlesServlet extends HttpServlet {
                     throws IOException, ServletException {
 
         // BEGIN
-        
+        List<Category> categories = new QCategory().findList();
+        request.setAttribute("categories", categories);
         // END
         TemplateEngineUtil.render("articles/new.html", request, response);
     }
@@ -123,7 +135,9 @@ public class ArticlesServlet extends HttpServlet {
         String categoryId = request.getParameter("categoryId");
 
         // BEGIN
-        
+        Category category = DB.find(Category.class, categoryId);
+        Article article = new Article(title, body, category);
+        article.save();
         // END
 
         session.setAttribute("flash", "Статья успешно создана");

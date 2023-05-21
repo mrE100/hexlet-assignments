@@ -23,6 +23,26 @@ public class Article extends Model {
     private Category category;
 
     // BEGIN
-    
+    public Article(String title, String body, Category category) {
+        this.title = title;
+        this.body = body;
+        this.category = category;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public long getId() {
+        return id;
+    }
     // END
 }
