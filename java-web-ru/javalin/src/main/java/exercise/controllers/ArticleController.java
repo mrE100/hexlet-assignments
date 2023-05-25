@@ -67,25 +67,57 @@ public final class ArticleController {
 
     public static Handler editArticle = ctx -> {
         // BEGIN
-        
+        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
+        Article article = new QArticle()
+                .id.equalTo(id)
+                .findOne();
+        List<Category> categories = new QCategory().findList();
+        ctx.attribute("article", article);
+        ctx.attribute("categories", categories);
+        ctx.render("articles/edit.html");
         // END
     };
 
     public static Handler updateArticle = ctx -> {
         // BEGIN
-        
+        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
+        String newTitle = ctx.formParam("title");
+        String newBody = ctx.formParam("body");
+        long newCategoryId = ctx.formParamAsClass("categoryId", Long.class).getOrDefault(null);
+
+        new QArticle()
+                .id.equalTo(id)
+                .asUpdate()
+                .set("title", newTitle)
+                .set("body", newBody)
+                .set("category", newCategoryId)
+                .update();
+
+        ctx.sessionAttribute("flash", "Статья успешно изменена");
+        ctx.redirect("/articles");
         // END
     };
 
     public static Handler deleteArticle = ctx -> {
         // BEGIN
-        
+        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
+        Article article = new QArticle()
+                .id.equalTo(id)
+                .findOne();
+        ctx.attribute("article", article);
+        ctx.render("articles/delete.html");
         // END
     };
 
     public static Handler destroyArticle = ctx -> {
         // BEGIN
-        
+        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
+        Article article = new QArticle()
+                .id.equalTo(id)
+                .findOne();
+        article.delete();
+        ctx.sessionAttribute("flash", "Статья успешно удалена");
+        ctx.redirect("/articles");
         // END
     };
 
