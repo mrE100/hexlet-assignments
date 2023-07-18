@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 // BEGIN
 @RestController
-public class HelloController {
+public class WelcomeController {
 
     @GetMapping("/")
     public String index() {
@@ -14,7 +14,7 @@ public class HelloController {
     }
 
     @GetMapping("/hello")
-    @ResponseBody
+//    @ResponseBody
     public String getFoos(@RequestParam(defaultValue = "World") String id) {
         return "Hello, " + id + "!";
     }
