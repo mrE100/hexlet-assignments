@@ -14,8 +14,8 @@ public class WelcomeController {
     }
 
     @GetMapping("/hello")
-    public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
-        return String.format("Hello %s!", name);
+    public String sayHello(@RequestParam(value = "name", defaultValue = "World!") String name) {
+        return String.format("Hello, %s", name);
     }
 }
 // END
