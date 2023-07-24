@@ -1,6 +1,9 @@
 package exercise.controller;
 
+import exercise.model.Person;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +20,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PeopleController {
 
-
     private final JdbcTemplate jdbc;
 
 
@@ -28,6 +30,23 @@ public class PeopleController {
     }
 
     // BEGIN
-    
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Person> getPeople() {
+        String query = "SELECT * FROM person";
+        return jdbc.query(query,
+                (rs, rowNum) -> new Person(rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name")));
+    }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Person getPerson(@PathVariable int id) {
+        String query = "SELECT * FROM person WHERE id = ?";
+        return jdbc.queryForObject(query,
+                (rs, rowNum) -> new Person(rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name")),
+                id);
+    }
     // END
 }

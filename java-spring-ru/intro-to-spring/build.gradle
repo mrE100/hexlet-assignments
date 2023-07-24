@@ -15,12 +15,14 @@ compileJava {
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.1'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 test {
   useJUnitPlatform()
 }
+
 
 testlogger {
   showStandardStreams = true
