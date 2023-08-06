@@ -33,6 +33,20 @@ public class PeopleController {
     }
 
     // BEGIN
-    
+    @PostMapping(path = "")
+    public void createPerson(@RequestBody Person person) {
+        this.personRepository.save(person);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public void deletePerson(@PathVariable long id) {
+        this.personRepository.deleteById(id);
+    }
+
+    @PatchMapping(path = "/{id}")
+    public void patchPerson(@PathVariable long id, @RequestBody Person person){
+        person.setId(id);
+        this.personRepository.save(person);
+    }
     // END
 }
