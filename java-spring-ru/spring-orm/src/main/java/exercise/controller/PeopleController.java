@@ -1,7 +1,6 @@
 package exercise.controller;
 
 import exercise.model.Person;
-import exercise.dto.PersonDto;
 import exercise.repository.PersonRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +43,7 @@ public class PeopleController {
     }
 
     @PatchMapping(path = "/{id}")
-    public void patchPerson(@PathVariable long id, @RequestBody Person person){
+    public void patchPerson(@PathVariable long id, @RequestBody Person person) {
         person.setId(id);
         this.personRepository.save(person);
     }
