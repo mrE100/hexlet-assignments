@@ -33,6 +33,27 @@ public class ArticlesController {
     }
 
     // BEGIN
-    
+    @PostMapping(path = "")
+    public void createArticle(@RequestBody ArticleDto articleDto) {
+        var article = new Article();
+        article.setBody(articleDto.getBody());
+        article.setName(articleDto.getName());
+        article.setCategory(articleDto.getCategory());
+        articleRepository.save(article);
+    }
+
+    @PatchMapping(path = "/{id}")
+    public void updateArticle(@PathVariable long id, @RequestBody ArticleDto articleDto) {
+        var article = articleRepository.findById(id);
+        article.setCategory(articleDto.getCategory());
+        article.setBody(articleDto.getBody());
+        article.setName(articleDto.getName());
+        articleRepository.save(article);
+    }
+
+    @GetMapping(path = "/{id}")
+    public Article getArticle(@PathVariable long id) {
+        return articleRepository.findById(id);
+    }
     // END
 }

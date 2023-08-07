@@ -11,5 +11,20 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
 
 // BEGIN
+@Getter
+@Setter
+@Entity
+public class Article {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
+    private String name;
+
+    @Lob
+    private Column body;
+
+    @ManyToOne
+    private Category category;
+}
 // END
