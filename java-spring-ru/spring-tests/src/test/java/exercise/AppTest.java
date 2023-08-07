@@ -32,7 +32,7 @@ import com.github.database.rider.core.api.dataset.DataSet;
 // Для этого нужно внедрить MockMvc
 
 // BEGIN
-
+@AutoConfigureMockMvc
 // END
 
 // Чтобы исключить влияние тестов друг на друга,
@@ -113,6 +113,53 @@ public class AppTest {
     }
 
     // BEGIN
-    
+    @Test
+    void testGetAllPersons() throws Exception {
+        MockHttpServletResponse response = mockMvc
+                .perform(get("/people"))
+                .andReturn()
+                .getResponse();
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
+        assertThat(response.getContentAsString()).contains("John", "Smith");
+        assertThat(response.getContentAsString()).contains("Jack", "Doe");
+    }
+
+    @Test
+    void testUpdatePerson() throws Exception {
+        var existingUserEmail = "jack@mail.com";
+        var existingUserId = TestUtils.getUserIdByEmail(mockMvc, existingUserEmail);
+        MockHttpServletResponse patchResponse = mockMvc
+                .perform(patch("/people/{id}", existingUserId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"firstName\": \"John\", \"lastName\": \"Doe\"}"))
+                .andReturn()
+                .getResponse();
+
+        // Проверяем статус ответа
+        assertThat(patchResponse.getStatus()).isEqualTo(200);
+        MockHttpServletResponse response = mockMvc
+                .perform(get("/people/{id}", existingUserId))
+                .andReturn()
+                .getResponse();
+        assertThat(response.getContentAsString()).contains("John", "Doe");
+        assertThat(response.getContentAsString()).doesNotContain("Jack");
+    }
+
+    @Test
+    void testDeletePerson() throws Exception {
+        var existingUserEmail = "mre@mail.ru";
+        var existingUserId = TestUtils.getUserIdByEmail(mockMvc, existingUserEmail);
+        MockHttpServletResponse response = mockMvc
+                .perform(delete("/people/{id}", existingUserId))
+                .andReturn()
+                .getResponse();
+        assertThat(response.getStatus()).isEqualTo(200);
+        MockHttpServletResponse newResponse = mockMvc
+                .perform(delete("/people/{id}", existingUserId))
+                .andReturn()
+                .getResponse();
+        assertThat(newResponse.getContentAsString()).doesNotContain("Sergei", "Ryabov");
+    }
     // END
 }
