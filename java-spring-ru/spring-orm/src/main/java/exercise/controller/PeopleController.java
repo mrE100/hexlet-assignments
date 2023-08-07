@@ -1,6 +1,7 @@
 package exercise.controller;
 
 import exercise.model.Person;
+import exercise.dto.PersonDto;
 import exercise.repository.PersonRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 
 @RestController
@@ -43,9 +46,11 @@ public class PeopleController {
     }
 
     @PatchMapping(path = "/{id}")
-    public void patchPerson(@PathVariable long id, @RequestBody Person person) {
-        person.setId(id);
-        this.personRepository.save(person);
+    public void updatePerson(@PathVariable Long id, @RequestBody Map<String, String> person) {
+        Person updatePerson = personRepository.findById(id).get();
+        updatePerson.setFirstName(person.get("firstName"));
+        updatePerson.setLastName(person.get("lastName"));
+        personRepository.save(updatePerson);
     }
     // END
 }
