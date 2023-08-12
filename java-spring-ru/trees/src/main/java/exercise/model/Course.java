@@ -25,6 +25,6 @@ public class Course {
     private String description;
 
     // BEGIN
-    
+    private String path;
     // END
 }
