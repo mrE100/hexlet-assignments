@@ -92,6 +92,22 @@ public class UsersController {
     }
 
     // BEGIN
-    
+    @Operation(summary = "Patch user by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User patched"),
+            @ApiResponse(responseCode = "404", description = "User with that id not found")
+    })
+    @PatchMapping(path = "/{id}")
+    public void updateUser(@Parameter(description = "Id of user to be found")
+                               @PathVariable long id,
+                           @Parameter(description = "User data to be updated")
+                           @RequestBody User user) {
+        if (!userRepository.existsById(id)) {
+            // Если не существует, возвращаем код ответа 404
+            throw new UserNotFoundException(id);
+        }
+        user.setId(id);
+        userRepository.save(user);
+    }
     // END
 }
