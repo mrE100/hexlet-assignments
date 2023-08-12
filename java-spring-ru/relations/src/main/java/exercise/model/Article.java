@@ -1,5 +1,6 @@
 package exercise.model;
 
+import exercise.dto.ArticleDto;
 import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,14 +18,18 @@ import jakarta.persistence.GenerationType;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private Long id;
+    @Column(unique = true)
     private String name;
-
     @Lob
-    private Column body;
-
+    private String body;
     @ManyToOne
     private Category category;
+    public Article() {}
+    public Article(ArticleDto articleDto) {
+        this.name = articleDto.getName();
+        this.body = articleDto.getBody();
+        this.category = articleDto.getCategory();
+    }
 }
 // END
