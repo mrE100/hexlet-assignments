@@ -5,9 +5,6 @@ people:
     - first_name: Jack
       last_name: Doe
       email: jack@mail.com
-    - first_name: Jassica
-      last_name: Simpson
-      email: jassika@yahoo.com
     - first_name: Sergei
       last_name: Ryabov
       email: mre@mail.ru
