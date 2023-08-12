@@ -60,7 +60,16 @@ public class PostController {
     @PatchMapping(path = "/{id}/archive")
     public Post archive(@PathVariable long id) {
         // BEGIN
-        
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+
+        // Вызывается событие archive
+        // Если переход возможен, устанавливаем новое состояние и сохраняем пост
+        if (post.archive()) {
+            return postRepository.save(post);
+        }
+
+        throw new UnprocessableEntityException("Archiving is not possible");
         // END
     }
 }

@@ -30,6 +30,20 @@ public class Post {
     private PostState state = PostState.CREATED;
 
     // BEGIN
-    
+    public boolean publish() {
+        if (state == PostState.CREATED) {
+            state = PostState.PUBLISHED;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean archive() {
+        if (state == PostState.PUBLISHED || state == PostState.CREATED) {
+            state = PostState.ARCHIVED;
+            return true;
+        }
+        return false;
+    }
     // END
 }
