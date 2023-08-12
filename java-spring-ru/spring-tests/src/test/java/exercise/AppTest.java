@@ -5,16 +5,17 @@ import exercise.dto.PersonDto;
 import exercise.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -23,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.http.MediaType;
 import com.github.database.rider.junit5.api.DBRider;
 import com.github.database.rider.core.api.dataset.DataSet;
+
+import java.io.UnsupportedEncodingException;
 
 @SpringBootTest
 // При тестировании можно вообще не запускать сервер
@@ -114,52 +117,50 @@ public class AppTest {
 
     // BEGIN
     @Test
-    void testGetAllPersons() throws Exception {
-        MockHttpServletResponse response = mockMvc
-                .perform(get("/people"))
+    void testGetPeople() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(get("/people"))
                 .andReturn()
                 .getResponse();
+
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(response.getContentAsString()).contains("John", "Smith");
-        assertThat(response.getContentAsString()).contains("Jack", "Doe");
+        assertThat(response.getContentAsString()).contains("john@gmail.com");
+        assertThat(response.getContentAsString()).contains("Jassica");
     }
 
     @Test
-    void testUpdatePerson() throws Exception {
+    void testPatchPerson() throws Exception {
         var existingUserEmail = "jack@mail.com";
         var existingUserId = TestUtils.getUserIdByEmail(mockMvc, existingUserEmail);
-        MockHttpServletResponse patchResponse = mockMvc
-                .perform(patch("/people/{id}", existingUserId)
+        var newEmail = "notJack@mail.com";
+        var patchedPerson = new PersonDto();
+        patchedPerson.setEmail(newEmail);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                patch("/people/{id}", existingUserId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstName\": \"John\", \"lastName\": \"Doe\"}"))
+                        .content(mapper.writeValueAsString(patchedPerson)))
+                .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
-        // Проверяем статус ответа
-        assertThat(patchResponse.getStatus()).isEqualTo(200);
-        MockHttpServletResponse response = mockMvc
-                .perform(get("/people/{id}", existingUserId))
-                .andReturn()
-                .getResponse();
-        assertThat(response.getContentAsString()).contains("John", "Doe");
-        assertThat(response.getContentAsString()).doesNotContain("Jack");
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertEquals(existingUserId, TestUtils.getUserIdByEmail(mockMvc, newEmail));
     }
 
     @Test
     void testDeletePerson() throws Exception {
-        var existingUserEmail = "mre@mail.ru";
+        var existingUserEmail = "jack@mail.com";
         var existingUserId = TestUtils.getUserIdByEmail(mockMvc, existingUserEmail);
-        MockHttpServletResponse response = mockMvc
-                .perform(delete("/people/{id}", existingUserId))
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        delete("/people/{id}", existingUserId))
+                .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
+
         assertThat(response.getStatus()).isEqualTo(200);
-        MockHttpServletResponse newResponse = mockMvc
-                .perform(delete("/people/{id}", existingUserId))
-                .andReturn()
-                .getResponse();
-        assertThat(newResponse.getContentAsString()).doesNotContain("Sergei", "Ryabov");
+        assertNull(repository.findById(existingUserId));
     }
     // END
 }
